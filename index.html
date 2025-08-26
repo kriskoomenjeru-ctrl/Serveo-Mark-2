@@ -1,13 +1,1896 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/index.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serveo - Find Trusted Help in Kenya</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --orange: #FF6A00;
+            --orange-glow: rgba(255, 106, 0, 0.5);
+            --white: #FFFFFF;
+            --dark-gray: #1C1C1C;
+            --charcoal: #0D0D0D;
+            --light-gray: #F5F5F5;
+            --medium-gray: #444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--charcoal);
+            color: var(--white);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Page styling */
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            padding: 20px 0;
+            min-height: 100vh;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            background-color: var(--charcoal);
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 106, 0, 0.2);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--orange);
+            text-shadow: 0 0 10px var(--orange-glow);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--orange);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--orange);
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-login {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--white);
+        }
+
+        .btn-login:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-signup {
+            background: var(--orange);
+            color: var(--white);
+            box-shadow: 0 0 15px var(--orange-glow);
+        }
+
+        .btn-signup:hover, .btn-primary:hover {
+            box-shadow: 0 0 20px var(--orange-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: var(--white);
+            box-shadow: 0 0 15px var(--orange-glow);
+            padding: 12px 30px;
+            display: inline-block;
+            text-decoration: none;
+            border-radius: 50px;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 0;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--orange) 0%, transparent 70%);
+            opacity: 0.1;
+            z-index: -1;
+            border-radius: 50%;
+            animation: pulse 4s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.15; transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(255, 106, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--light-gray);
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        .search-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 5px;
+            display: flex;
+            width: 100%;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 106, 0, 0.3);
+            box-shadow: 0 0 20px var(--orange-glow);
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            background: transparent;
+            border: none;
+            color: var(--white);
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        .search-location {
+            padding: 15px 20px;
+            background: transparent;
+            border: none;
+            color: var(--white);
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .search-btn {
+            padding: 15px 30px;
+            background: var(--orange);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--orange-glow);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--dark-gray);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 60px;
+            height: 60px;
+            background: var(--orange);
+            border-radius: 50%;
+            filter: blur(20px);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(255, 106, 0, 0.2);
+        }
+
+        .service-card:hover::before {
+            opacity: 0.5;
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--orange);
+        }
+
+        .service-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 80px 0;
+            background: var(--dark-gray);
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            flex: 1;
+        }
+
+        .step-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--charcoal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            position: relative;
+            box-shadow: 0 0 20px var(--orange-glow);
+        }
+
+        .step-circle::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--orange) 0%, transparent 70%);
+            opacity: 0.3;
+        }
+
+        .step-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--orange);
+        }
+
+        /* Search Results Page */
+        .search-results-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .filters-sidebar {
+            background: var(--dark-gray);
+            border-radius: 15px;
+            padding: 20px;
+            width: 280px;
+            flex-shrink: 0;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .filter-group:last-child {
+            border-bottom: none;
+        }
+
+        .filter-group h3 {
+            color: var(--orange);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-option input {
+            accent-color: var(--orange);
+        }
+
+        .price-slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .price-range {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.9rem;
+            color: var(--light-gray);
+        }
+
+        .server-cards {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .server-card {
+            background: var(--dark-gray);
+            border-radius: 15px;
+            padding: 20px;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .server-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 106, 0, 0.2);
+        }
+
+        .server-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .server-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 2px solid var(--orange);
+        }
+
+        .server-info h3 {
+            margin-bottom: 5px;
+        }
+
+        .server-rating {
+            color: var(--orange);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .server-details {
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .server-detail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .server-detail i {
+            color: var(--orange);
+            width: 16px;
+        }
+
+        /* Server Profile Page */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            background: var(--dark-gray);
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--orange);
+            box-shadow: 0 0 20px var(--orange-glow);
+        }
+
+        .profile-info {
+            margin-left: 30px;
+            flex-grow: 1;
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .verified-badge {
+            color: var(--orange);
+            font-size: 1.2rem;
+        }
+
+        .profile-rating {
+            color: var(--orange);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .profile-meta {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .profile-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .profile-meta-item i {
+            color: var(--orange);
+        }
+
+        .profile-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .profile-section {
+            background: var(--dark-gray);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .profile-section h2 {
+            color: var(--orange);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: rgba(255, 106, 0, 0.2);
+            color: var(--orange);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .pricing-table th, .pricing-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .pricing-table th {
+            color: var(--orange);
+        }
+
+        .review {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .review:last-child {
+            border-bottom: none;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .reviewer {
+            font-weight: 600;
+        }
+
+        .review-date {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+        }
+
+        .booking-sidebar {
+            background: var(--dark-gray);
+            border-radius: 15px;
+            padding: 25px;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .booking-sidebar h2 {
+            color: var(--orange);
+            margin-bottom: 20px;
+        }
+
+        .price-display {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--orange);
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .availability-calendar {
+            margin: 20px 0;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day {
+            text-align: center;
+            padding: 8px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .calendar-day:hover {
+            background: rgba(255, 106, 0, 0.2);
+        }
+
+        .calendar-day.available {
+            background: rgba(255, 106, 0, 0.1);
+            color: var(--orange);
+        }
+
+        .calendar-day.selected {
+            background: var(--orange);
+            color: var(--white);
+        }
+
+        .time-slots {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .time-slot {
+            padding: 8px 15px;
+            background: var(--charcoal);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .time-slot:hover {
+            background: rgba(255, 106, 0, 0.2);
+        }
+
+        .time-slot.selected {
+            background: var(--orange);
+            color: var(--white);
+        }
+
+        /* Booking Page */
+        .booking-container {
+            display: flex;
+            gap: 30px;
+        }
+
+        .booking-form {
+            flex: 2;
+        }
+
+        .form-section {
+            background: var(--dark-gray);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            color: var(--orange);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: var(--charcoal);
+            border: 1px solid var(--medium-gray);
+            border-radius: 8px;
+            color: var(--white);
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 2px rgba(255, 106, 0, 0.2);
+        }
+
+        .booking-summary {
+            flex: 1;
+            background: var(--dark-gray);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 0 20px var(--orange-glow);
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin: 20px 0;
+            padding-top: 15px;
+            border-top: 1px solid var(--medium-gray);
+        }
+
+        /* Payment Page */
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .payment-option {
+            background: var(--dark-gray);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .payment-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px var(--orange-glow);
+        }
+
+        .payment-option.selected {
+            border-color: var(--orange);
+            box-shadow: 0 0 20px var(--orange-glow);
+        }
+
+        .payment-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .mpesa-icon {
+            color: #00A650;
+        }
+
+        .visa-icon {
+            color: #1A1F71;
+        }
+
+        .mastercard-icon {
+            color: #EB001B;
+        }
+
+        .payment-form {
+            background: var(--dark-gray);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        /* Confirmation Page */
+        .confirmation {
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .confirmation-icon {
+            font-size: 5rem;
+            color: var(--orange);
+            margin-bottom: 30px;
+            text-shadow: 0 0 30px var(--orange-glow);
+            animation: confirmPulse 2s infinite;
+        }
+
+        @keyframes confirmPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .confirmation-details {
+            background: var(--dark-gray);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 30px auto;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--charcoal);
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: var(--orange);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--orange);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--dark-gray);
+            color: var(--white);
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--orange);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light-gray);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--dark-gray);
+            color: var(--white);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast i {
+            color: var(--orange);
+            font-size: 1.2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .search-container {
+                flex-direction: column;
+                border-radius: 15px;
+            }
+
+            .search-location {
+                border-left: none;
+                border-right: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .steps {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .booking-container, .profile-content, .search-results-container {
+                flex-direction: column;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-info {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+
+            .filters-sidebar {
+                width: 100%;
+                position: static;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Operation completed successfully</span>
+    </div>
+
+    <!-- Navigation -->
+    <header class="container">
+        <nav>
+            <div class="logo" onclick="navigateTo('home')">
+                <i class="fas fa-bolt logo-icon"></i>
+                Serveo
+            </div>
+            <div class="nav-links">
+                <a href="#" onclick="navigateTo('home')">Home</a>
+                <a href="#" onclick="navigateTo('search')">Services</a>
+                <a href="#">How it Works</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="auth-buttons">
+                <button class="btn btn-login">Login</button>
+                <button class="btn btn-signup">Sign Up</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Find trusted help, anytime, anywhere.</h1>
+            <p>Book electricians, fundis, maids, and more instantly across Kenya.</p>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="What service do you need?">
+                <select class="search-location">
+                    <option>Nairobi</option>
+                    <option>Mombasa</option>
+                    <option>Kisumu</option>
+                    <option>Nakuru</option>
+                    <option>Eldoret</option>
+                </select>
+                <button class="search-btn" onclick="navigateTo('search')">Find a Server</button>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="services container">
+            <h2 class="section-title">Featured Services</h2>
+            <div class="services-grid">
+                <div class="service-card" onclick="navigateTo('search')">
+                    <div class="service-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Electricians</h3>
+                    <p>Certified electricians for all your wiring and installation needs.</p>
+                </div>
+                <div class="service-card" onclick="navigateTo('search')">
+                    <div class="service-icon"><i class="fas fa-tools"></i></div>
+                    <h3>Fundis</h3>
+                    <p>Skilled craftsmen for repairs and installations around your home.</p>
+                </div>
+                <div class="service-card" onclick="navigateTo('search')">
+                    <div class="service-icon"><i class="fas fa-broom"></i></div>
+                    <h3>Maids</h3>
+                    <p>Professional cleaning services for homes and offices.</p>
+                </div>
+                <div class="service-card" onclick="navigateTo('search')">
+                    <div class="service-icon"><i class="fas fa-truck-moving"></i></div>
+                    <h3>Movers</h3>
+                    <p>Reliable moving services with careful handling of your items.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works">
+            <div class="container">
+                <h2 class="section-title">How It Works</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-circle">
+                            <div class="step-number">1</div>
+                        </div>
+                        <h3>Search</h3>
+                        <p>Find the right service professional for your needs</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">
+                            <div class="step-number">2</div>
+                        </div>
+                        <h3>Book</h3>
+                        <p>Schedule an appointment at your convenience</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">
+                            <div class="step-number">3</div>
+                        </div>
+                        <h3>Pay</h3>
+                        <p>Secure payment through M-Pesa or card</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">
+                            <div class="step-number">4</div>
+                        </div>
+                        <h3>Done</h3>
+                        <p>Enjoy your completed service</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Search Results Page -->
+    <div id="search" class="page">
+        <div class="container">
+            <h2 class="section-title">Available Service Providers</h2>
+            
+            <div class="search-results-container">
+                <div class="filters-sidebar">
+                    <h2><i class="fas fa-filter"></i> Filters</h2>
+                    <div class="filter-group">
+                        <h3><i class="fas fa-tag"></i> Category</h3>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" checked> Electricians
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox"> Plumbers
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox"> Maids
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox"> Movers
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox"> Fundis
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h3><i class="fas fa-money-bill-wave"></i> Price Range</h3>
+                        <input type="range" min="100" max="5000" step="100" class="price-slider" value="2500">
+                        <div class="price-range">
+                            <span>KSh 100</span>
+                            <span>KSh 5000</span>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h3><i class="fas fa-star"></i> Rating</h3>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="radio" name="rating" checked> 4+ Stars
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="rating"> 3+ Stars
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="rating"> Any Rating
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h3><i class="fas fa-map-marker-alt"></i> Location</h3>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" checked> Nairobi
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox"> Mombasa
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox"> Kisumu
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary" style="width: 100%;">Apply Filters</button>
+                </div>
+                
+                <div class="server-cards">
+                    <div class="server-card" onclick="navigateTo('profile')">
+                        <div class="server-header">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="John Kamau" class="server-img">
+                            <div class="server-info">
+                                <h3>John Kamau</h3>
+                                <div class="server-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9 (128 reviews)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="server-details">
+                            <div class="server-detail">
+                                <i class="fas fa-bolt"></i>
+                                <span>Electrician</span>
+                            </div>
+                            <div class="server-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Nairobi, Westlands</span>
+                            </div>
+                            <div class="server-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>Available today</span>
+                            </div>
+                            <div class="server-detail">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span>KSh 800/hour</span>
+                            </div>
+                        </div>
+                        <button class="btn-primary">View Profile</button>
+                    </div>
+                    
+                    <div class="server-card" onclick="navigateTo('profile')">
+                        <div class="server-header">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Susan Atieno" class="server-img">
+                            <div class="server-info">
+                                <h3>Susan Atieno</h3>
+                                <div class="server-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.7 (96 reviews)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="server-details">
+                            <div class="server-detail">
+                                <i class="fas fa-broom"></i>
+                                <span>Maid</span>
+                            </div>
+                            <div class="server-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Kisumu</span>
+                            </div>
+                            <div class="server-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>Available tomorrow</span>
+                            </div>
+                            <div class="server-detail">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span>KSh 500/hour</span>
+                            </div>
+                        </div>
+                        <button class="btn-primary">View Profile</button>
+                    </div>
+                    
+                    <div class="server-card" onclick="navigateTo('profile')">
+                        <div class="server-header">
+                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="Mike Otieno" class="server-img">
+                            <div class="server-info">
+                                <h3>Mike Otieno</h3>
+                                <div class="server-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.5 (87 reviews)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="server-details">
+                            <div class="server-detail">
+                                <i class="fas fa-tools"></i>
+                                <span>Plumber</span>
+                            </div>
+                            <div class="server-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Mombasa</span>
+                            </div>
+                            <div class="server-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>Available now</span>
+                            </div>
+                            <div class="server-detail">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span>KSh 700/hour</span>
+                            </div>
+                        </div>
+                        <button class="btn-primary">View Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Server Profile Page -->
+    <div id="profile" class="page">
+        <div class="container">
+            <div class="profile-header">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="John Kamau" class="profile-img">
+                <div class="profile-info">
+                    <h2 class="profile-name">John Kamau <i class="fas fa-check-circle verified-badge"></i></h2>
+                    <div class="profile-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>4.9 (128 reviews)</span>
+                    </div>
+                    <p>Certified Electrician • 5 years experience</p>
+                    <div class="profile-meta">
+                        <div class="profile-meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Nairobi, Westlands</span>
+                        </div>
+                        <div class="profile-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Available today</span>
+                        </div>
+                        <div class="profile-meta-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span>42 jobs completed</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="navigateTo('booking')">Book Now</button>
+            </div>
+            
+            <div class="profile-content">
+                <div>
+                    <div class="profile-section">
+                        <h2>About Me</h2>
+                        <p>John is a certified electrician with over 5 years of experience in residential and commercial electrical work. He specializes in wiring, installations, and electrical repairs. John is known for his attention to detail and reliability.</p>
+                        <p>He completed his electrical engineering certification at Kenya Technical Training College and is licensed by the Energy and Petroleum Regulatory Authority (EPRA).</p>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <h2>Services Offered</h2>
+                        <div class="skills-list">
+                            <span class="skill-tag">Electrical wiring installation</span>
+                            <span class="skill-tag">Lighting installation</span>
+                            <span class="skill-tag">Outlet and switch installation</span>
+                            <span class="skill-tag">Electrical troubleshooting</span>
+                            <span class="skill-tag">Safety inspections</span>
+                            <span class="skill-tag">Generator installation</span>
+                            <span class="skill-tag">Solar panel installation</span>
+                            <span class="skill-tag">Emergency electrical repairs</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <h2>Pricing</h2>
+                        <table class="pricing-table">
+                            <tr>
+                                <th>Service</th>
+                                <th>Duration</th>
+                                <th>Price</th>
+                            </tr>
+                            <tr>
+                                <td>Electrical inspection</td>
+                                <td>1-2 hours</td>
+                                <td>KSh 1,500</td>
+                            </tr>
+                            <tr>
+                                <td>Outlet installation</td>
+                                <td>1 hour</td>
+                                <td>KSh 800</td>
+                            </tr>
+                            <tr>
+                                <td>Light fixture installation</td>
+                                <td>1-2 hours</td>
+                                <td>KSh 1,200</td>
+                            </tr>
+                            <tr>
+                                <td>Electrical wiring</td>
+                                <td>3+ hours</td>
+                                <td>KSh 800/hour</td>
+                            </tr>
+                            <tr>
+                                <td>Emergency service</td>
+                                <td>Varies</td>
+                                <td>KSh 1,200/hour</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <h2>Reviews</h2>
+                        <div class="review">
+                            <div class="review-header">
+                                <span class="reviewer">Mary Wanjiku</span>
+                                <span class="review-date">2 days ago</span>
+                            </div>
+                            <div class="profile-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p>John did an excellent job installing new outlets in my kitchen. He was punctual, professional, and cleaned up after finishing the job. Highly recommend!</p>
+                        </div>
+                        <div class="review">
+                            <div class="review-header">
+                                <span class="reviewer">James Ochieng</span>
+                                <span class="review-date">1 week ago</span>
+                            </div>
+                            <div class="profile-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p>Fixed my faulty wiring quickly and explained what the issue was. Fair pricing and quality work. Will definitely hire again for future electrical work.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="booking-sidebar">
+                    <h2>Book Your Service</h2>
+                    <div class="price-display">KSh 800/hour</div>
+                    
+                    <div class="availability-calendar">
+                        <div class="calendar-header">
+                            <h3>Select Date</h3>
+                            <div>
+                                <button class="btn-login" style="padding: 5px 10px;"><i class="fas fa-chevron-left"></i></button>
+                                <button class="btn-login" style="padding: 5px 10px;"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="calendar-grid">
+                            <div class="calendar-day">S</div>
+                            <div class="calendar-day">M</div>
+                            <div class="calendar-day">T</div>
+                            <div class="calendar-day">W</div>
+                            <div class="calendar-day">T</div>
+                            <div class="calendar-day">F</div>
+                            <div class="calendar-day">S</div>
+                            
+                            <div class="calendar-day"></div>
+                            <div class="calendar-day"></div>
+                            <div class="calendar-day">1</div>
+                            <div class="calendar-day">2</div>
+                            <div class="calendar-day">3</div>
+                            <div class="calendar-day available">4</div>
+                            <div class="calendar-day available">5</div>
+                            
+                            <div class="calendar-day available">6</div>
+                            <div class="calendar-day available">7</div>
+                            <div class="calendar-day available">8</div>
+                            <div class="calendar-day">9</div>
+                            <div class="calendar-day">10</div>
+                            <div class="calendar-day available">11</div>
+                            <div class="calendar-day available">12</div>
+                            
+                            <div class="calendar-day available">13</div>
+                            <div class="calendar-day">14</div>
+                            <div class="calendar-day">15</div>
+                            <div class="calendar-day available">16</div>
+                            <div class="calendar-day available">17</div>
+                            <div class="calendar-day available">18</div>
+                            <div class="calendar-day">19</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <h3>Select Time</h3>
+                        <div class="time-slots">
+                            <div class="time-slot">9:00 AM</div>
+                            <div class="time-slot">10:00 AM</div>
+                            <div class="time-slot">11:00 AM</div>
+                            <div class="time-slot">1:00 PM</div>
+                            <div class="time-slot">2:00 PM</div>
+                            <div class="time-slot">3:00 PM</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary" style="width: 100%; margin-top: 30px;" onclick="navigateTo('booking')">Continue to Booking</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Page -->
+    <div id="booking" class="page">
+        <div class="container">
+            <h2 class="section-title">Book Your Service</h2>
+            
+            <div class="booking-container">
+                <div class="booking-form">
+                    <div class="form-section">
+                        <h2><i class="fas fa-tasks"></i> Service Details</h2>
+                        <div class="form-group">
+                            <label for="service-type">Service Type</label>
+                            <select id="service-type" class="form-control">
+                                <option>Electrical wiring installation</option>
+                                <option>Lighting installation</option>
+                                <option>Outlet and switch installation</option>
+                                <option>Electrical troubleshooting</option>
+                                <option>Safety inspection</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="service-date">Date & Time</label>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <input type="date" id="service-date" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <select id="service-time" class="form-control">
+                                        <option>9:00 AM</option>
+                                        <option>10:00 AM</option>
+                                        <option>11:00 AM</option>
+                                        <option>1:00 PM</option>
+                                        <option>2:00 PM</option>
+                                        <option>3:00 PM</option>
+                                        <option>4:00 PM</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="duration">Estimated Duration</label>
+                            <select id="duration" class="form-control">
+                                <option>1 hour</option>
+                                <option>2 hours</option>
+                                <option>3 hours</option>
+                                <option>4 hours</option>
+                                <option>5+ hours</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2><i class="fas fa-map-marker-alt"></i> Location Details</h2>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" class="form-control" placeholder="Enter your full address">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" class="form-control" value="Nairobi" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="postal-code">Postal Code</label>
+                                <input type="text" id="postal-code" class="form-control" placeholder="Postal code">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h2><i class="fas fa-sticky-note"></i> Additional Information</h2>
+                        <div class="form-group">
+                            <label for="instructions">Special Instructions</label>
+                            <textarea id="instructions" class="form-control" placeholder="Any special requests or details about the job?" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="booking-summary">
+                    <h2>Booking Summary</h2>
+                    <div class="summary-item">
+                        <span>Service:</span>
+                        <span>Electrical wiring installation</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Provider:</span>
+                        <span>John Kamau</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Date & Time:</span>
+                        <span>Tomorrow, 10:00 AM</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Duration:</span>
+                        <span>3 hours</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Hourly rate:</span>
+                        <span>KSh 800</span>
+                    </div>
+                    
+                    <div class="summary-total">
+                        <span>Total:</span>
+                        <span>KSh 2,400</span>
+                    </div>
+                    
+                    <button class="btn-primary" style="width: 100%;" onclick="navigateTo('payment')">Continue to Payment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Page -->
+    <div id="payment" class="page">
+        <div class="container">
+            <h2 class="section-title">Payment</h2>
+            
+            <div class="payment-options">
+                <div class="payment-option" onclick="selectPayment('mpesa')">
+                    <div class="payment-icon">
+                        <i class="fab fa-mpesa mpesa-icon"></i>
+                    </div>
+                    <h3>M-Pesa</h3>
+                    <p>Pay via M-Pesa mobile money</p>
+                </div>
+                <div class="payment-option" onclick="selectPayment('visa')">
+                    <div class="payment-icon">
+                        <i class="fab fa-cc-visa visa-icon"></i>
+                    </div>
+                    <h3>Visa</h3>
+                    <p>Pay with Visa card</p>
+                </div>
+                <div class="payment-option" onclick="selectPayment('mastercard')">
+                    <div class="payment-icon">
+                        <i class="fab fa-cc-mastercard mastercard-icon"></i>
+                    </div>
+                    <h3>Mastercard</h3>
+                    <p>Pay with Mastercard</p>
+                </div>
+            </div>
+            
+            <div id="mpesa-form" class="payment-form">
+                <h3><i class="fab fa-mpesa mpesa-icon"></i> M-Pesa Payment</h3>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" class="form-control" placeholder="e.g. 07XX XXX XXX" pattern="[0-9]{10}">
+                </div>
+                <button class="btn-primary" onclick="processPayment()">Confirm Payment</button>
+            </div>
+            
+            <div id="card-form" class="payment-form" style="display: none;">
+                <h3><i class="fas fa-credit-card"></i> Card Payment</h3>
+                <div class="form-group">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" class="form-control" placeholder="1234 5678 9012 3456">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="expiry">Expiry Date</label>
+                        <input type="text" id="expiry" class="form-control" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" class="form-control" placeholder="123">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="card-name">Name on Card</label>
+                    <input type="text" id="card-name" class="form-control" placeholder="John Doe">
+                </div>
+                <button class="btn-primary" onclick="processPayment()">Confirm Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Page -->
+    <div id="confirmation" class="page">
+        <div class="container">
+            <div class="confirmation">
+                <div class="confirmation-icon">✅</div>
+                <h2 class="section-title">Booking Completed!</h2>
+                <p>Your Server will contact you shortly at your provided contact information.</p>
+                
+                <div class="confirmation-details">
+                    <div class="detail-row">
+                        <span>Booking Reference:</span>
+                        <span>#SERV2023589</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Service:</span>
+                        <span>Electrical wiring installation</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Provider:</span>
+                        <span>John Kamau</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Date & Time:</span>
+                        <span>Tomorrow, 10:00 AM - 1:00 PM</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>Total Paid:</span>
+                        <span>KSh 2,400</span>
+                    </div>
+                </div>
+                
+                <button class="btn-primary" onclick="navigateTo('home')">Return to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Serveo</h3>
+                <p>Connecting you with trusted service professionals across Kenya.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="#">Electricians</a></li>
+                    <li><a href="#">Plumbers</a></li>
+                    <li><a href="#">Maids</a></li>
+                    <li><a href="#">Movers</a></li>
+                    <li><a href="#">Fundis</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">How it Works</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Serveo. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation function
+        function navigateTo(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Payment selection function
+        function selectPayment(type) {
+            // Remove selected class from all options
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            event.currentTarget.classList.add('selected');
+            
+            // Show the appropriate form
+            if (type === 'mpesa') {
+                document.getElementById('mpesa-form').style.display = 'block';
+                document.getElementById('card-form').style.display = 'none';
+            } else {
+                document.getElementById('mpesa-form').style.display = 'none';
+                document.getElementById('card-form').style.display = 'block';
+            }
+        }
+        
+        // Process payment function
+        function processPayment() {
+            // Show loading state
+            const button = event.currentTarget;
+            const originalText = button.textContent;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            button.disabled = true;
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                // Navigate to confirmation page
+                navigateTo('confirmation');
+                
+                // Show success notification
+                showToast('Payment processed successfully!');
+                
+                // Reset button
+                button.textContent = originalText;
+                button.disabled = false;
+            }, 2000);
+        }
+        
+        // Toast notification function
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Initialize page with some functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add pulse animation to CTA buttons
+            const ctaButtons = document.querySelectorAll('.btn-signup, .search-btn, .btn-primary');
+            ctaButtons.forEach(btn => {
+                setInterval(() => {
+                    btn.style.boxShadow = '0 0 15px var(--orange-glow)';
+                    setTimeout(() => {
+                        btn.style.boxShadow = '0 0 20px var(--orange-glow)';
+                    }, 1000);
+                }, 2000);
+            });
+            
+            // Add calendar selection functionality
+            const calendarDays = document.querySelectorAll('.calendar-day:not(:empty)');
+            calendarDays.forEach(day => {
+                day.addEventListener('click', function() {
+                    document.querySelectorAll('.calendar-day.selected').forEach(d => {
+                        d.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Add time slot selection functionality
+            const timeSlots = document.querySelectorAll('.time-slot');
+            timeSlots.forEach(slot => {
+                slot.addEventListener('click', function() {
+                    document.querySelectorAll('.time-slot.selected').forEach(s => {
+                        s.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Initialize with M-Pesa selected
+            selectPayment('mpesa');
+        });
+    </script>
+</body>
 </html>
