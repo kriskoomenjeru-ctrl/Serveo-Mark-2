@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - Serveo Kenya</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --orange: #FF6A00;
+            --orange-glow: rgba(255, 106, 0, 0.5);
+            --white: #FFFFFF;
+            --dark-gray: #1C1C1C;
+            --charcoal: #0D0D0D;
+            --light-gray: #F5F5F5;
+            --medium-gray: #444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--charcoal);
+            color: var(--white);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Page styling */
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            padding: 20px 0;
+            min-height: 100vh;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            background-color: var(--charcoal);
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 106, 0, 0.2);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--orange);
+            text-shadow: 0 0 10px var(--orange-glow);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--orange);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--orange);
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-login {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--white);
+        }
+
+        .btn-login:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-signup {
+            background: var(--orange);
+            color: var(--white);
+            box-shadow: 0 0 15px var(--orange-glow);
+        }
+
+        .btn-signup:hover, .btn-primary:hover {
+            box-shadow: 0 0 20px var(--orange-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: var(--white);
+            box-shadow: 0 0 15px var(--orange-glow);
+            padding: 12px 30px;
+            display: inline-block;
+            text-decoration: none;
+            border-radius: 50px;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 0;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--orange) 0%, transparent 70%);
+            opacity: 0.1;
+            z-index: -1;
+            border-radius: 50%;
+            animation: pulse 4s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.15; transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(255, 106, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--light-gray);
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            flex: 1;
+            padding: 0 20px;
+        }
+
+        .step-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--charcoal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            position: relative;
+            box-shadow: 0 0 20px var(--orange-glow);
+        }
+
+        .step-circle::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--orange) 0%, transparent 70%);
+            opacity: 0.3;
+        }
+
+        .step-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--orange);
+        }
+
+        .step-icon {
+            font-size: 2rem;
+            color: var(--orange);
+        }
+
+        /* About Serveo Section */
+        .about-serveo {
+            padding: 80px 0;
+            background: var(--dark-gray);
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about-content p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 80px 0;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .benefit-card {
+            background: var(--dark-gray);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(255, 106, 0, 0.2);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--orange);
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 80px 0;
+            background: var(--dark-gray);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            background: var(--charcoal);
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .faq-answer {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 20px;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--charcoal);
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            color: var(--orange);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--orange);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--dark-gray);
+            color: var(--white);
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--orange);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light-gray);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .steps {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .step {
+                padding: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="container">
+        <nav>
+            <div class="logo" onclick="navigateTo('home')">
+                <i class="fas fa-bolt logo-icon"></i>
+                Serveo
+            </div>
+            <div class="nav-links">
+                <a href="#" onclick="navigateTo('home')">Home</a>
+                <a href="#" onclick="navigateTo('search')">Services</a>
+                <a href="#" onclick="navigateTo('how-it-works')">How it Works</a>
+                <a href="#" onclick="navigateTo('about')">About</a>
+                <a href="#" onclick="navigateTo('contact')">Contact</a>
+            </div>
+            <div class="auth-buttons">
+                <button class="btn btn-login">Login</button>
+                <button class="btn btn-signup">Sign Up</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- How It Works Page -->
+    <div id="how-it-works" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>How Serveo Works</h1>
+            <p>Connecting you with trusted service professionals across Kenya has never been easier</p>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works container">
+            <h2 class="section-title">Our Simple Process</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-circle">
+                        <div class="step-icon"><i class="fas fa-search"></i></div>
+                    </div>
+                    <h3>1. Search</h3>
+                    <p>Find the right service professional for your specific needs. Filter by service type, location, ratings, and price.</p>
+                </div>
+                <div class="step">
+                    <div class="step-circle">
+                        <div class="step-icon"><i class="fas fa-calendar-check"></i></div>
+                    </div>
+                    <h3>2. Book</h3>
+                    <p>Schedule an appointment at your convenience. Choose from available time slots that work for you.</p>
+                </div>
+                <div class="step">
+                    <div class="step-circle">
+                        <div class="step-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    </div>
+                    <h3>3. Pay Securely</h3>
+                    <p>Make secure payments through M-Pesa or card. Your payment is protected until the job is completed to your satisfaction.</p>
+                </div>
+                <div class="step">
+                    <div class="step-circle">
+                        <div class="step-icon"><i class="fas fa-check-circle"></i></div>
+                    </div>
+                    <h3>4. Enjoy</h3>
+                    <p>Relax while your service is completed professionally. Review your experience to help others find quality service.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Serveo Section -->
+        <section class="about-serveo">
+            <div class="container">
+                <h2 class="section-title">About Serveo</h2>
+                <div class="about-content">
+                    <p>Serveo is Kenya's premier platform connecting customers with trusted service professionals. Founded in 2023, our mission is to make finding reliable help for your home and business needs simple, secure, and efficient.</p>
+                    
+                    <p>We carefully vet all service providers on our platform to ensure they meet our high standards for quality, reliability, and professionalism. Every provider undergoes background checks and verification processes before they can offer services through Serveo.</p>
+                    
+                    <p>Whether you need an electrician, plumber, cleaner, mover, or any other service professional, Serveo provides a seamless way to find, book, and pay for services with complete peace of mind.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="benefits container">
+            <h2 class="section-title">Why Choose Serveo</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Verified Professionals</h3>
+                    <p>All service providers are thoroughly vetted and verified for your safety and peace of mind.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-lock"></i></div>
+                    <h3>Secure Payments</h3>
+                    <p>Your payments are protected until you're completely satisfied with the service provided.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-star"></i></div>
+                    <h3>Quality Guaranteed</h3>
+                    <p>We stand behind the quality of work with our satisfaction guarantee policy.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-clock"></i></div>
+                    <h3>Save Time</h3>
+                    <p>Find and book trusted help in minutes, not days of searching and calling around.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <h3>Transparent Pricing</h3>
+                    <p>No hidden fees or surprise charges. See all costs upfront before booking.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon"><i class="fas fa-headset"></i></div>
+                    <h3>24/7 Support</h3>
+                    <p>Our customer support team is always available to help with any questions or issues.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq">
+            <div class="container">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            How do I book a service? <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Booking a service is simple! Search for the service you need, select a provider that matches your requirements, choose a convenient time slot, and confirm your booking. You'll receive a confirmation with all the details.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            How are service providers vetted? <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>All service providers undergo a rigorous verification process that includes background checks, license verification (where applicable), skills assessment, and review of previous work history. We also monitor customer ratings and reviews continuously.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            What payment methods are accepted? <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>We accept M-Pesa for mobile payments, as well as major credit and debit cards including Visa and Mastercard. All payments are processed securely through encrypted channels.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            What if I'm not satisfied with the service? <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Your satisfaction is guaranteed. If you're not happy with the service provided, contact us within 24 hours and we'll work with the service provider to make it right or provide a refund according to our terms of service.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Can I schedule services in advance? <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes! You can book services up to 30 days in advance. This is especially useful for planning larger projects or regular maintenance services.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Ready to find trusted help?</h2>
+                    <p>Join thousands of satisfied customers across Kenya who have discovered the ease of booking services through Serveo.</p>
+                    <button class="btn-primary" onclick="navigateTo('search')">Find a Service Provider</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Serveo</h3>
+                <p>Connecting you with trusted service professionals across Kenya.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="#">Electricians</a></li>
+                    <li><a href="#">Plumbers</a></li>
+                    <li><a href="#">Maids</a></li>
+                    <li><a href="#">Movers</a></li>
+                    <li><a href="#">Fundis</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">How it Works</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Serveo. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation function
+        function navigateTo(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // FAQ functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    // Close all other FAQ items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
+                    
+                    // Toggle current item
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Add pulse animation to CTA buttons
+            const ctaButtons = document.querySelectorAll('.btn-signup, .btn-primary');
+            ctaButtons.forEach(btn => {
+                setInterval(() => {
+                    btn.style.boxShadow = '0 0 15px var(--orange-glow)';
+                    setTimeout(() => {
+                        btn.style.boxShadow = '0 0 20px var(--orange-glow)';
+                    }, 1000);
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
